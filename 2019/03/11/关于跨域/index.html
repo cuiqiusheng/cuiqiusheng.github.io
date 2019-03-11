@@ -21,13 +21,15 @@
 <p> CORS（Corss-origin resource sharing）是一个W3C标准，全称是“跨域资源共享”。<br> <a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="noopener">CORS详解</a></p>
 </li>
 <li><p><strong>代理</strong></p>
-<p> 例如webpack-dev-server：</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(1)browser =&gt; localhost:8080(webpack-dev-server无代理) =&gt; http://you.test.com</span><br><span class="line">(2)browser =&gt; localhost:8080(webpack-dev-server有代理) =&gt; http://you.test.com</span><br></pre></td></tr></table></figure>
+<p> <strong>服务器之间的通信不存在同源策略问题</strong>，例如webpack-dev-server：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. browser =&gt; localhost:8080(webpack-dev-server无代理) =&gt; http://you.test.com</span><br><span class="line">2. browser =&gt; localhost:8080(webpack-dev-server有代理) =&gt; http://you.test.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>上面第一种情况客户端直接访问跨域的服务端，会受同源策略限制。</li>
+<li>而第二种，客户端访问代理服务器，代理服务器访问真正的服务器。<strong>服务器之间的通信不存在同源策略问题</strong>，所以同源策略的问题就通过代理服务器得到了解决。</li>
+</ul>
 </li>
 </ol>
-<pre><code>- 上面第一种情况客户端直接访问跨域的服务端，会受同源策略限制。
-- 而第二种，客户端访问代理服务器，代理服务器访问真正的服务器。**服务器之间的通信不存在同源策略问题**，所以同源策略的问题就通过代理服务器得到了解决。
-</code></pre></div><div class="tags"><a href="/tags/跨域/">跨域</a></div><div class="post-nav"><a class="next" href="/2019/03/10/HTTP相关/">HTTP相关</a></div><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+</div><div class="tags"><a href="/tags/跨域/">跨域</a></div><div class="post-nav"><a class="next" href="/2019/03/10/HTTP相关/">HTTP相关</a></div><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
 var verify = 'false' == true ? true : false;
 var GUEST_INFO = ['nick','mail','link'];
 var guest_info = 'nick,mail,link'.split(',').filter(function(item){
