@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>抽卡模拟器</title>
+</head>
+
+<body>
+  <div class="container wrapper">
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 75px;" class="input-group-text" id="label_sp">SP概率</span>
+      </div>
+      <input id="prob_sp" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="label_sp" placeholder="输入正整数，数字越大概率越大">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 75px;" class="input-group-text" id="label_ssr">SSR概率</span>
+      </div>
+      <input id="prob_ssr" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="label_ssr" placeholder="输入正整数，数字越大概率越大">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 75px;" class="input-group-text" id="label_sr">SR概率</span>
+      </div>
+      <input id="prob_sr" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="label_sr" placeholder="输入正整数，数字越大概率越大">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 75px;" class="input-group-text" id="label_r">R概率</span>
+      </div>
+      <input id="prob_r" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="label_r" placeholder="输入正整数，数字越大概率越大">
+    </div>
+
+
+    <div class="container shishen-box" id="shishen_img">
+      <!-- <img src="../download/sp/天剑韧心鬼切.png" alt="" /> -->
+    </div>
+
+    <div class="container tip" id="tip"></div>
+    <div class="container desc" id="desc"></div>
+
+    <button type="button" class="btn btn-primary btn-lg btn-block lucky-one" id="lucky_one">来一抽</button>
+    <!-- <button type="button" class="btn btn-primary" id=“lucky_ten>来十抽</button> -->
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+  <script src="./js/sources.js"></script>
+  <script src="./js/utils.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+
+</html>
