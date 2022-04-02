@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="吾心自足，心无外物，时时可死。步步求生，纵横四海，心无挂碍。"><title>Webpack | 不着急</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Webpack</h1><a id="logo" href="/.">不着急</a><p class="description">吾心自足，心无外物，时时可死。步步求生，纵横四海，心无挂碍。</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/yys/"><i class="fa fa-lab"> lab</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Webpack</h1><div class="post-meta">Jan 11, 2022<span> | </span><span class="category"><a href="/categories/八股文/">八股文</a></span></div><a class="disqus-comment-count" href="/2022/01/11/1/Webpack/#vcomment"><span class="valine-comment-count" data-xid="/2022/01/11/1/Webpack/"></span><span> 条评论</span></a><div class="post-content"><h2 id="entry-output"><a href="#entry-output" class="headerlink" title="entry output"></a>entry output</h2><ul>
+<li><p>entry: 入口文件， 可以是数组或者对象形式，可以配置多入口</p>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">entry: <span class="string">'index.js'</span></span><br><span class="line"></span><br><span class="line">entry: [<span class="string">'index.js'</span>]</span><br><span class="line"></span><br><span class="line">entry : &#123; <span class="attr">main</span>: <span class="string">'index.js'</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 多页面，多入口</span></span><br><span class="line">entry: &#123;</span><br><span class="line">    a: a.js,</span><br><span class="line">    b: b.js</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>output: 输出文件，配置路径，文件名，chunk文件名等。</p>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">output: &#123;</span><br><span class="line">    path: xxx绝对路径,</span><br><span class="line">    filename: [name].[id].[hash].[chunkhash].[contenthash].js</span><br><span class="line">    chunkFilename: [name].[id].js, <span class="comment">// 这个name并不是ntry入口的名字， 而是魔法注释 /* webpackChunkName: 'myChunk' */</span></span><br><span class="line">    publicPath: xxx, <span class="comment">// 指定app运行在哪个路径， 如根路径 “ / ” 或者子路径 “ /subpath/ ”</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="loader和plugins的区别"><a href="#loader和plugins的区别" class="headerlink" title="loader和plugins的区别"></a>loader和plugins的区别</h2><ul>
+<li>loader: webpack自身只支持js和json这两种格式的文件，对于其他文件需要通过loader将其转换为commonJS规范的文件后，webpack才能解析到。Loader是在打包构建过程中用来处理源文件的（JSX，Scss，Less..），一次处理一个。</li>
+<li>plugin: 插件用于扩展webpack的功能，作用于webpack的整个生命周期，比loader更强大。plugin可以监听webpack的生命周期事件，在合适的时机通过 Webpack 提供的 API 改变输出结果。</li>
+</ul>
+<h2 id="有哪些常见的Loader？"><a href="#有哪些常见的Loader？" class="headerlink" title="有哪些常见的Loader？"></a>有哪些常见的Loader？</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">css-loader, style-loader, sass-loader, less-loader, url-loader, file-loader, babel-loader, eslint-loader</span><br></pre></td></tr></table></figure>
+<h2 id="有哪些常见的Plugin？"><a href="#有哪些常见的Plugin？" class="headerlink" title="有哪些常见的Plugin？"></a>有哪些常见的Plugin？</h2><ul>
+<li>HtmlWebpackPlugin： 生成HTML文件，并将打包的bundle和chunk引入到HTML中</li>
+<li>webpack.DefinePlugin：在js代码中使用自定义变量</li>
+<li>InterpolateHtmlPlugin：在index.html中使用自定义变量</li>
+<li>MiniCssExtractPlugin: 该插件将CSS提取到单独的文件中，可以指定输出文件名</li>
+<li>CleanWebpackPlugin： 清空上次打包的文件夹</li>
+<li>CopyPlugin： Copy指定文件夹下的内容到指定文件夹</li>
+<li>SplitChunksPlugin： 用来提取第三方库和公共模块</li>
+<li>TerserPlugin： 压缩js代码, 一般用于optimization选项</li>
+<li>OptimizeCSSAssetsPlugin： 压缩css代码，一般用于optimization选项</li>
+</ul>
+<h2 id="如何编写一个plugin"><a href="#如何编写一个plugin" class="headerlink" title="如何编写一个plugin"></a>如何编写一个plugin</h2><ol>
+<li>创建一个类，包含apply方法</li>
+<li>逻辑在apply中实现，可以监听webpack的各种钩子函数， 比如beforeRun, run, compile, emit, done等。</li>
+<li><p>tap，tapAsync方法可以用来同步或者异步执行。</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyWebpackPlugin</span> </span>&#123;</span><br><span class="line">　　<span class="keyword">constructor</span>(options)&#123;</span><br><span class="line">　　　　<span class="keyword">this</span>.options = options;</span><br><span class="line">　　&#125;</span><br><span class="line">　　apply(compiler) &#123;</span><br><span class="line">　　    <span class="comment">// compiler 很重要，是webpack的一个实例，这个实例存储了webpack各种信息，所有打包信息</span></span><br><span class="line">        compiler.hooks.run.tap(<span class="string">'MyWebpackPlugin'</span>, (compiler) =&gt; &#123;&#125;)</span><br><span class="line">        compiler.hooks.compile.tap(<span class="string">'MyWebpackPlugin'</span>, (compilationParams) =&gt; &#123;&#125;)</span><br><span class="line">        compiler.hooks.emit.tap(<span class="string">'MyWebpackPlugin'</span>, (compilation) =&gt; &#123;&#125;)</span><br><span class="line">        compiler.hooks.done.tap(<span class="string">'MyWebpackPlugin'</span>, (stats) =&gt; &#123;&#125;)</span><br><span class="line">　　&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = webpackPlugin;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="webpack的构建流程是什么"><a href="#webpack的构建流程是什么" class="headerlink" title="webpack的构建流程是什么?"></a>webpack的构建流程是什么?</h2><p>Webpack 的运行流程是一个串行的过程，从启动到结束会依次执行以下流程：</p>
+<ul>
+<li>初始化参数：从配置文件和 Shell 语句中读取与合并参数，得出最终的参数；</li>
+<li>开始编译：用上一步得到的参数初始化 Compiler 对象，加载所有配置的插件，执行对象的 run 方法开始执行编译；</li>
+<li>确定入口：根据配置中的 entry 找出所有的入口文件；</li>
+<li>编译模块：从入口文件出发，调用所有配置的 Loader 对模块进行翻译，再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理；</li>
+<li>完成模块编译：在经过第4步使用 Loader 翻译完所有模块后，得到了每个模块被翻译后的最终内容以及它们之间的依赖关系；</li>
+<li>输出资源：根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk，再把每个 Chunk 转换成一个单独的文件加入到输出列表，这步是可以修改输出内容的最后机会；</li>
+<li>输出完成：在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统。</li>
+</ul>
+<p>在以上过程中，Webpack 会在特定的时间点广播出特定的事件，插件在监听到感兴趣的事件后会执行特定的逻辑，并且插件可以调用 Webpack 提供的 API 改变 Webpack 的运行结果。</p>
+<h2 id="webpack与grunt、gulp的不同？"><a href="#webpack与grunt、gulp的不同？" class="headerlink" title="webpack与grunt、gulp的不同？"></a>webpack与grunt、gulp的不同？</h2><p>三者都是前端构建工具，grunt和gulp在早期比较流行，现在webpack相对来说比较主流，不过一些轻量化的任务还是会用gulp来处理，比如单独打包CSS文件等。</p>
+<p>grunt和gulp是基于任务和流（Task、Stream）的。类似jQuery，找到一个（或一类）文件，对其做一系列链式操作，更新流上的数据， 整条链式操作构成了一个任务，多个任务就构成了整个web的构建流程。</p>
+<p>webpack是基于入口的。webpack会自动地递归解析入口所需要加载的所有资源文件，然后用不同的Loader来处理不同的文件，用Plugin来扩展webpack功能。</p>
+<h2 id="webpack、rollup、parcel优劣？"><a href="#webpack、rollup、parcel优劣？" class="headerlink" title="webpack、rollup、parcel优劣？"></a>webpack、rollup、parcel优劣？</h2><ul>
+<li>webpack适用于大型复杂的前端站点构建</li>
+<li>rollup适用于基础库的打包，如vue、react</li>
+<li>parcel适用于简单的实验性项目，他可以满足低门槛的快速看到效果</li>
+</ul>
+<h2 id="分别介绍module-chunk-bundle是什么"><a href="#分别介绍module-chunk-bundle是什么" class="headerlink" title="分别介绍module, chunk, bundle是什么"></a>分别介绍module, chunk, bundle是什么</h2><ul>
+<li>module: 简单来说，你通过import语句引入的代码块，都叫module。css，图片等也都叫module</li>
+<li>chunk: 是webpack根据功能拆分出来的，包含三种情况：<ul>
+<li>你的项目入口（entry）chunk，也就是main chunk，一般这个chunk包含了你大部分的代码。</li>
+<li>通过import()动态引入的模块，会被打包为子chunk</li>
+<li>通过splitChunks拆分出来的代码, 也是子chunk</li>
+</ul>
+</li>
+<li>bundle: 是webpack打包之后的各个文件，一般就是和chunk是一对一的关系。bundle就是对chunk进行编译压缩打包等处理之后的产出。</li>
+</ul>
+<h2 id="热更新"><a href="#热更新" class="headerlink" title="热更新"></a>热更新</h2><p>不用刷新浏览器而将新变更的模块替换掉旧的模块。</p>
+<h2 id="如何提高webpack构建速度"><a href="#如何提高webpack构建速度" class="headerlink" title="如何提高webpack构建速度"></a>如何提高webpack构建速度</h2><ol>
+<li>使用cache-loader缓存结果</li>
+<li><p>使用DLLPlugin 和 DLLReferencePlugin</p>
+<ul>
+<li><p>DLLPlugin 这个插件是在一个额外独立的webpack设置中创建一个只有dll的bundle，也就是说我们在项目根目录下除了有webpack.config.js，还会新建一个webpack.dll.config.js文件。webpack.dll.config.js作用是把所有的第三方库依赖打包到一个bundle的dll文件里面，还会生成一个名为 manifest.json文件。<br>该manifest.json的作用是用来让 DllReferencePlugin 映射到相关的依赖上去的。</p>
+</li>
+<li><p>DllReferencePlugin 这个插件是在webpack.config.js中使用的，该插件的作用是把刚刚在webpack.dll.config.js中打包生成的dll文件引用到需要的预编译的依赖上来。什么意思呢？就是说在webpack.dll.config.js中打包后比如会生成 vendor.dll.js文件和vendor-manifest.json文件，vendor.dll.js文件包含所有的第三方库文件，vendor-manifest.json文件会包含所有库代码的一个索引，当在使用webpack.config.js文件打包DllReferencePlugin插件的时候，会使用该DllReferencePlugin插件读取vendor-manifest.json文件，看看是否有该第三方库。vendor-manifest.json文件就是有一个第三方库的一个映射而已。</p>
+<p>所以说 第一次使用 webpack.dll.config.js 文件会对第三方库打包，打包完成后就不会再打包它了，然后每次运行 webpack.config.js文件的时候，都会打包项目中本身的文件代码，当需要使用第三方依赖的时候，会使用 DllReferencePlugin插件去读取第三方依赖库。所以说它的打包速度会得到一个很大的提升。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="如何用webpack来优化前端性能？"><a href="#如何用webpack来优化前端性能？" class="headerlink" title="如何用webpack来优化前端性能？"></a>如何用webpack来优化前端性能？</h2><ol>
+<li>压缩代码。js, css, image</li>
+<li>利用CDN 加速， 所以文件需要有hash值</li>
+<li>gzip</li>
+<li>tree shaking</li>
+<li>提取公共代码</li>
+<li>代码分割， 避免太大</li>
+</ol>
+<h2 id="tree-shaking-原理"><a href="#tree-shaking-原理" class="headerlink" title="tree shaking 原理"></a>tree shaking 原理</h2><p>Tree shaking是基于ES6模板语法（import与export），主要是借助ES6模块的静态编译思想，在编译时就能确定模块的依赖关系，以及输入和输出的变量</p>
+<p>Tree shaking无非就是做了两件事：</p>
+<p>编译阶段利用ES6 Module判断哪些模块已经加载  </p>
+<p>判断那些模块和变量未被使用或者引用，进而删除对应代码</p>
+</div><div class="tags"><a href="/tags/Webpack/">Webpack</a></div><div class="post-nav"><a class="pre" href="/2022/01/11/1/React/">React</a><a class="next" href="/2022/01/11/1/vue3-vite/">Vue3-Vite</a></div><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'cXa2hNBumN2DUEHc5sMwqmAR-gzGzoHsz',
+  appKey:'k25vMV7ayuuHBhTaLWsiFGXp',
+  placeholder:'ヾﾉ≧∀≦)o欢迎你的评论~~~',
+  avatar:'mm',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://cuiqs.com"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/八股文/">八股文</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/学习/">学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计划/">计划</a><span class="category-list-count">2</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/防火墙/" style="font-size: 15px;">防火墙</a> <a href="/tags/OKR/" style="font-size: 15px;">OKR</a> <a href="/tags/学习/" style="font-size: 15px;">学习</a> <a href="/tags/浏览器/" style="font-size: 15px;">浏览器</a> <a href="/tags/Webkit/" style="font-size: 15px;">Webkit</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a> <a href="/tags/virtualenv/" style="font-size: 15px;">virtualenv</a> <a href="/tags/跨域/" style="font-size: 15px;">跨域</a> <a href="/tags/JavaScript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/ubuntu-nginx/" style="font-size: 15px;">ubuntu nginx</a> <a href="/tags/抓取网页/" style="font-size: 15px;">抓取网页</a> <a href="/tags/webpack4/" style="font-size: 15px;">webpack4</a> <a href="/tags/CSS/" style="font-size: 15px;">CSS</a> <a href="/tags/HTML/" style="font-size: 15px;">HTML</a> <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/Vue3-Vite/" style="font-size: 15px;">Vue3-Vite</a> <a href="/tags/Vue/" style="font-size: 15px;">Vue</a> <a href="/tags/性能优化/" style="font-size: 15px;">性能优化</a> <a href="/tags/ES6/" style="font-size: 15px;">ES6</a> <a href="/tags/网络与安全/" style="font-size: 15px;">网络与安全</a> <a href="/tags/软性/" style="font-size: 15px;">软性</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/CSS/">CSS</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/HTML/">HTML</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/React/">React</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/Webpack/">Webpack</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/vue3-vite/">Vue3-Vite</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/Vue/">Vue</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/JavaScript/">JavaScript</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/性能优化/">性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/ES6/">ES6</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/浏览器/">浏览器</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2022 <a href="/." rel="nofollow">不着急.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

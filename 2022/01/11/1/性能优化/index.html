@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="吾心自足，心无外物，时时可死。步步求生，纵横四海，心无挂碍。"><title>性能优化 | 不着急</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">性能优化</h1><a id="logo" href="/.">不着急</a><p class="description">吾心自足，心无外物，时时可死。步步求生，纵横四海，心无挂碍。</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/yys/"><i class="fa fa-lab"> lab</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">性能优化</h1><div class="post-meta">Jan 11, 2022<span> | </span><span class="category"><a href="/categories/八股文/">八股文</a></span></div><a class="disqus-comment-count" href="/2022/01/11/1/性能优化/#vcomment"><span class="valine-comment-count" data-xid="/2022/01/11/1/性能优化/"></span><span> 条评论</span></a><div class="post-content"><h2 id="html优化"><a href="#html优化" class="headerlink" title="html优化"></a>html优化</h2><ul>
+<li>避免 HTML 中书写 CSS 代码，因为这样难以维护。</li>
+<li>使用 Viewport 加速页面的渲染。</li>
+<li>使用语义化标签，减少 CSS 代码，增加可读性和 SEO。</li>
+<li>减少标签的使用，DOM 解析是一个大量遍历的过程，减少不必要的标签，能降低遍历的次数。</li>
+<li>避免 src、href 等的值为空，因为即时它们为空，浏览器也会发起 HTTP 请求。</li>
+<li>减少 DNS 查询的次数</li>
+</ul>
+<h2 id="css优化"><a href="#css优化" class="headerlink" title="css优化"></a>css优化</h2><ul>
+<li>优化选择器路径：使用 .c {} 而不是 .a .b .c {}。</li>
+<li>选择器合并：共同的属性内容提起出来，压缩空间和资源开销。</li>
+<li>精准样式：使用 padding-left: 10px 而不是 padding: 0 0 0 10px。</li>
+<li>雪碧图：将小的图标合并到一张图中，这样所有的图片只需要请求一次。</li>
+<li>避免通配符：.a .b <em> {} 这样的选择器，根据从右到左的解析顺序在解析过程中遇到通配符 </em> {} 6、会遍历整个 DOM，性能大大损耗。</li>
+<li>少用 float：float 在渲染时计算量比较大，可以使用 flex 布局。</li>
+<li>为 0 值去单位：增加兼容性。</li>
+<li>压缩文件大小，减少资源下载负担。</li>
+</ul>
+<h2 id="javascript优化"><a href="#javascript优化" class="headerlink" title="javascript优化"></a>javascript优化</h2><ul>
+<li>尽可能把 <code>&lt;script&gt;</code> 标签放在 body 之后，避免 JS 的执行卡住 DOM 的渲染，最大程度保证页面尽快地展示出来</li>
+<li>尽可能合并 JS 代码：提取公共方法，进行面向对象设计等……</li>
+<li>CSS 能做的事情，尽量不用 JS 来做，毕竟 JS 的解析执行比较粗暴，而 CSS 效率更高。</li>
+<li>尽可能逐条操作 DOM，并预定好 CSs 样式，从而减少 reflow 或者 repaint 的次数。</li>
+<li>尽可能少地创建 DOM，而是在 HTML 和 CSS 中使用 display: none 来隐藏，按需显示。</li>
+<li>压缩文件大小，减少资源下载负担。</li>
+</ul>
+<h2 id="网络相关"><a href="#网络相关" class="headerlink" title="网络相关"></a>网络相关</h2><ul>
+<li>DNS 预解析<br>  <code>&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//host_name_to_prefetch.com&quot; /&gt;</code></li>
+<li>缓存（见上文浏览器缓存机制）</li>
+<li>使用 HTTP / 2.0</li>
+<li>预加载: 指明哪些资源是在页面加载完成后即刻需要的<br>  <code>&lt;link rel=&quot;preload&quot; href=&quot;fonts/cicle_fina-webfont.woff&quot; /&gt;</code></li>
+<li>预加载: 浏览器空闲时加载，这些资源权重比preload低<br>  <code>&lt;link rel=&quot;prefetch&quot; href=&quot;fonts/cicle_fina-webfont.woff&quot; /&gt;</code></li>
+<li>预渲染: 告诉浏览器我即将跳转到这个URL， 浏览器可以提前解析<br>  <code>&lt;link rel=&quot;prerender&quot; href=&quot;http://example.com&quot; /&gt;</code></li>
+</ul>
+<h2 id="优化渲染过程"><a href="#优化渲染过程" class="headerlink" title="优化渲染过程"></a>优化渲染过程</h2><ul>
+<li>代码层面的优化（参考浏览器篇如何减少重绘和回流）</li>
+<li>懒执行 —— 将某些逻辑放到使用时再进行，可以通过定时器或事件进行唤醒</li>
+<li>懒加载 —— 将不关键的资源延后加载，如图片、视频资源等。</li>
+</ul>
+<h2 id="文件优化"><a href="#文件优化" class="headerlink" title="文件优化"></a>文件优化</h2><h3 id="图片优化："><a href="#图片优化：" class="headerlink" title="图片优化："></a>图片优化：</h3><p>可以用 css 模拟代替的尽量不要用图片<br>小图片用 base64 格式<br>雪碧图<br>选择正确的图片格式  </p>
+<p>选择使用 WebP 格式，体积较小，缺点是兼容性不好<br>小图使用 PNG ，图标类可以使用 SVG 代替<br>照片使用 JPEG  </p>
+<h3 id="其他文件优化："><a href="#其他文件优化：" class="headerlink" title="其他文件优化："></a>其他文件优化：</h3><p>CSS 文件放在 head 中<br>服务端开启文件压缩功能<br>将 script 标签放在 body 底部，因为 JS 文件执行会阻塞渲染。<br>script 文件异步加载  </p>
+<p>defer：在 script 标签上加上 defer 属性，defer 是在 HTML 解析完之后才会执行，如果是多个，按照加载的顺序依次执行<br>async：在 script 标签上加上 async 属性，async 是在加载完之后立即执行，如果是多个，执行顺序和加载顺序无关  </p>
+<p>对于需要很多时间计算的代码可以考虑使用 Webworker，Webworker 可以让我们另开一个线程执行脚本而不影响渲染。  </p>
+<p>使用CDN</p>
+<h2 id="使用-Webpack-优化项目："><a href="#使用-Webpack-优化项目：" class="headerlink" title="使用 Webpack 优化项目："></a>使用 Webpack 优化项目：</h2><p>对于 Webpack4，打包项目使用 production 模式，这样会自动开启代码压缩<br>开启 tree shaking，移除没有用的代码<br>优化图片，对于小图可以使用 base64 的方式写入文件中<br>按照路由拆分代码，实现按需加载<br>给打包出来的文件名添加哈希，实现浏览器缓存文件  </p>
+<h2 id="首屏加载优化有哪些方案么"><a href="#首屏加载优化有哪些方案么" class="headerlink" title="首屏加载优化有哪些方案么"></a>首屏加载优化有哪些方案么</h2><p>Vue-Router路由懒加载（利用Webpack的代码切割）<br>使用CDN加速，将通用的库从vendor进行抽离<br>Nginx的gzip压缩<br>Vue异步组件<br>服务端渲染SSR<br>如果使用了一些UI库，采用按需加载<br>Webpack开启gzip压缩<br>如果首屏为登录页，可以做成多入口<br>Service Worker缓存文件处理<br>使用link标签的rel属性设置   prefetch（这段资源将会在未来某个导航或者功能要用到，但是本资源的下载顺序权重比较低，prefetch通常用于加速下一次导航）、preload（preload将会把资源得下载顺序权重提高，使得关键数据提前下载好，优化页面打开速度）</p>
+</div><div class="tags"><a href="/tags/性能优化/">性能优化</a></div><div class="post-nav"><a class="pre" href="/2022/01/11/1/JavaScript/">JavaScript</a><a class="next" href="/2022/01/11/1/ES6/">ES6</a></div><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'cXa2hNBumN2DUEHc5sMwqmAR-gzGzoHsz',
+  appKey:'k25vMV7ayuuHBhTaLWsiFGXp',
+  placeholder:'ヾﾉ≧∀≦)o欢迎你的评论~~~',
+  avatar:'mm',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://cuiqs.com"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/八股文/">八股文</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/学习/">学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计划/">计划</a><span class="category-list-count">2</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/防火墙/" style="font-size: 15px;">防火墙</a> <a href="/tags/OKR/" style="font-size: 15px;">OKR</a> <a href="/tags/学习/" style="font-size: 15px;">学习</a> <a href="/tags/浏览器/" style="font-size: 15px;">浏览器</a> <a href="/tags/Webkit/" style="font-size: 15px;">Webkit</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a> <a href="/tags/virtualenv/" style="font-size: 15px;">virtualenv</a> <a href="/tags/跨域/" style="font-size: 15px;">跨域</a> <a href="/tags/JavaScript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/ubuntu-nginx/" style="font-size: 15px;">ubuntu nginx</a> <a href="/tags/抓取网页/" style="font-size: 15px;">抓取网页</a> <a href="/tags/webpack4/" style="font-size: 15px;">webpack4</a> <a href="/tags/CSS/" style="font-size: 15px;">CSS</a> <a href="/tags/HTML/" style="font-size: 15px;">HTML</a> <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/Vue3-Vite/" style="font-size: 15px;">Vue3-Vite</a> <a href="/tags/Vue/" style="font-size: 15px;">Vue</a> <a href="/tags/性能优化/" style="font-size: 15px;">性能优化</a> <a href="/tags/ES6/" style="font-size: 15px;">ES6</a> <a href="/tags/网络与安全/" style="font-size: 15px;">网络与安全</a> <a href="/tags/软性/" style="font-size: 15px;">软性</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/CSS/">CSS</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/HTML/">HTML</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/React/">React</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/Webpack/">Webpack</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/vue3-vite/">Vue3-Vite</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/Vue/">Vue</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/JavaScript/">JavaScript</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/性能优化/">性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/ES6/">ES6</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/浏览器/">浏览器</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2022 <a href="/." rel="nofollow">不着急.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="吾心自足，心无外物，时时可死。步步求生，纵横四海，心无挂碍。"><title>浏览器 | 不着急</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">浏览器</h1><a id="logo" href="/.">不着急</a><p class="description">吾心自足，心无外物，时时可死。步步求生，纵横四海，心无挂碍。</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/yys/"><i class="fa fa-lab"> lab</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">浏览器</h1><div class="post-meta">Jan 11, 2022<span> | </span><span class="category"><a href="/categories/八股文/">八股文</a></span></div><a class="disqus-comment-count" href="/2022/01/11/1/浏览器/#vcomment"><span class="valine-comment-count" data-xid="/2022/01/11/1/浏览器/"></span><span> 条评论</span></a><div class="post-content"><h2 id="浏览器事件循环"><a href="#浏览器事件循环" class="headerlink" title="浏览器事件循环"></a>浏览器事件循环</h2><ol>
+<li>同步代码，放入函数调用栈执行。异步任务，放入队列。</li>
+<li>异步任务又分为宏任务和微任务。遇到宏仁务放入宏仁务队列，遇到微任务放入微任务队列。</li>
+<li>宏仁务主要是setTimeout ，setInterval</li>
+<li>微任务主要是Promise.then, MutationObserver</li>
+</ol>
+<p>同步代码全部执行完毕了之后，会先去微任务队列中执行相关的任务，微任务队列清空之后，再从宏仁务队列中拿出一个任务执行，执行完之后再去执行微任务队列，然后再从宏仁务队列中拿出另一个任务执行。如此循环。</p>
+<p>如果有async/await<br>await关键字后面的方法也是立即执行，执行完之后会继续执行全局同步代码，等同步代码执行完毕, 才会将await语句后面的代码放入微任务队列。不是立即放入。 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;, <span class="number">1000</span>)</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">        resolve()</span><br><span class="line">    &#125;).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="number">5</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="number">6</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">7</span>)</span><br><span class="line">    resolve()</span><br><span class="line">&#125;).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">8</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">9</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">await</span> async2()</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="number">10</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> async3()</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="number">11</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async3</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">12</span>)</span><br><span class="line">&#125;</span><br><span class="line">async1()</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">13</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1, 7, 12, 13, 8, 9, 11, 10, 3, 4, 5, 6, 2</span></span><br></pre></td></tr></table></figure>
+<h2 id="用户输入-url-到页面呈现的过程"><a href="#用户输入-url-到页面呈现的过程" class="headerlink" title="用户输入 url 到页面呈现的过程"></a>用户输入 url 到页面呈现的过程</h2><ol>
+<li>用户输入url</li>
+<li>域名解析(DNS解析)，浏览器查找域名的 IP 地址 </li>
+<li>找到 IP 地址后，TCP 三次握手，与目标服务器建立连接</li>
+<li>建立连接后，浏览器向目标主机发送 http 请求</li>
+<li>服务器处理收到的请求，将数据返回至浏览器</li>
+<li>浏览器收到 HTTP 响应报文，关闭连接，开始解析文档  <ol>
+<li>解析HTML生成DOM树</li>
+<li>解析CSS生成CSSOM树，构建Style Rules</li>
+<li>DOM和CSSOM树合成渲染树，RenderTree</li>
+<li>Layout，布局，节点的大小和位置信息</li>
+<li>painting，绘制，渲染在屏幕上</li>
+</ol>
+</li>
+</ol>
+<h2 id="怎么判断页面是否加载完成？"><a href="#怎么判断页面是否加载完成？" class="headerlink" title="怎么判断页面是否加载完成？"></a>怎么判断页面是否加载完成？</h2><ul>
+<li>DOMContentLoaded事件在页面文档加载解析完毕之后马上执行, 不需要等待 CSS，JS，图片加载。</li>
+<li>load事件在页面所有资源被加载进来之后才会触发，在DOMContentLoaded事件触发之后。</li>
+</ul>
+<h2 id="浏览器渲染过程"><a href="#浏览器渲染过程" class="headerlink" title="浏览器渲染过程"></a>浏览器渲染过程</h2><ol>
+<li>解析HTML，生成DOM树</li>
+<li>解析CSS，生成CSSOM树</li>
+<li>将DOM树和CSSOM树结合，生成渲染树(Render Tree)</li>
+<li>Layout：根据生成的渲染树，进行布局，得到节点的几何信息（位置，大小）</li>
+<li>Painting：将元素渲染在屏幕上</li>
+</ol>
+<h2 id="回流-重排（Reflow）和-重绘（Repaint）"><a href="#回流-重排（Reflow）和-重绘（Repaint）" class="headerlink" title="回流/重排（Reflow）和 重绘（Repaint）"></a>回流/重排（Reflow）和 重绘（Repaint）</h2><p>回流：当Render Tree中部分或全部元素的尺寸、结构、或某些属性发生改变时，浏览器重新渲染部分或全部文档的过程称为回流，回流也被称为重排，即重新计算布局。<br>重绘：<br>当页面元素样式改变不影响元素在文档流中的位置时（如background-color，border-color，visibility），浏览器只会将新样式赋予元素并进行重新绘制操作。</p>
+<p>回流必定会发生重绘，重绘不一定会引发回流。</p>
+<h3 id="何时发生回流和重绘"><a href="#何时发生回流和重绘" class="headerlink" title="何时发生回流和重绘"></a>何时发生回流和重绘</h3><p>回流：  </p>
+<ul>
+<li>浏览器窗口大小发生改变</li>
+<li>元素尺寸或位置发生改变</li>
+<li>元素内容变化（文字数量或图片大小等等）</li>
+<li>添加或者删除可见的DOM元素</li>
+<li>激活CSS伪类（例如：:hover）</li>
+<li>查询某些属性或调用某些方法<br>如 clientWidth、clientHeight、clientTop、clientLeft<br>offsetWidth、offsetHeight、offsetTop、offsetLeft<br>scrollWidth、scrollHeight、scrollTop、scrollLeft</li>
+</ul>
+<p>重绘：<br>当页面中元素样式的改变并不影响它在文档流中的位置时（例如：color、background-color、visibility等）</p>
+<h3 id="减少重绘和回流"><a href="#减少重绘和回流" class="headerlink" title="减少重绘和回流"></a>减少重绘和回流</h3><ol>
+<li><p>CSS：</p>
+<ul>
+<li>避免使用table布局。</li>
+<li>尽可能在DOM树的最末端改变class。</li>
+<li>避免设置多层内联样式。</li>
+<li>将动画效果应用到position属性为absolute或fixed的元素上</li>
+<li>避免使用CSS表达式（例如：calc()）</li>
+<li>使用CSS3硬件加速（GPU加速）</li>
+</ul>
+</li>
+<li><p>JavaScript：</p>
+<ul>
+<li>避免频繁操作样式，最好一次性重写style属性，或者将样式列表定义为class并一次性更改class属性</li>
+<li><p>避免频繁操作DOM，创建一个documentFragment，在它上面应用所有DOM操作，最后再把它添加到文档中</p>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">frag = <span class="built_in">document</span>.creatDocumentFragment();</span><br><span class="line"></span><br><span class="line">p = <span class="built_in">document</span>.creatElement(<span class="string">'p'</span>);</span><br><span class="line">t = <span class="built_in">document</span>.creatTextNode(<span class="string">'fist paragraph'</span>);</span><br><span class="line">p.appendChild(t);</span><br><span class="line">farg.appendChild(p);</span><br><span class="line"></span><br><span class="line">p = <span class="built_in">document</span>.creatElement(<span class="string">'p'</span>);</span><br><span class="line">t = <span class="built_in">document</span>.creatTextNode(<span class="string">'second paragraph'</span>);</span><br><span class="line">p.appendChild(t);</span><br><span class="line">farg.appendChild(p);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.body.appendChild(frag)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>也可以先为元素设置display: none，操作结束后再把它显示出来。因为在display属性为none的元素上进行的DOM操作不会引发回流和重绘</p>
+</li>
+<li>避免频繁读取会引发回流/重绘的属性，如果确实需要多次使用，就用一个变量缓存起来</li>
+<li>对具有复杂动画的元素使用绝对定位，使它脱离文档流，否则会引起父元素及后续元素频繁回流</li>
+</ul>
+</li>
+</ol>
+<h2 id="浏览器的渲染进程和执行进程"><a href="#浏览器的渲染进程和执行进程" class="headerlink" title="浏览器的渲染进程和执行进程"></a>浏览器的渲染进程和执行进程</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.body.style = <span class="string">'background: red'</span>;</span><br><span class="line"><span class="built_in">document</span>.body.style = <span class="string">'background: black'</span>;</span><br></pre></td></tr></table></figure>
+<p>上述代码执行浏览器会由红变黑吗？</p>
+<p>不会，直接变黑，因为浏览器的js执行进程和DOM渲染进程是不同的，js执行的时候会阻塞浏览器的渲染，所以js执行完的结果就是黑，浏览器直接渲染黑</p>
+<h2 id="如何变成复合图层（硬件加速）"><a href="#如何变成复合图层（硬件加速）" class="headerlink" title="如何变成复合图层（硬件加速）"></a>如何变成复合图层（硬件加速）</h2><p>将元素变成一个复合图层，就是传说中的硬件加速技术。<br>一般一个元素开启硬件加速后会变成复合图层，可以独立于普通文档流中，改动后可以避免整个页面重绘，提升性能。<br>使用硬件加速时，尽可能的使用index，防止浏览器默认把比它高的元素也弄到复合层中渲染。提升渲染性能。</p>
+<p>满足下列条件会变为复合层</p>
+<ul>
+<li>3D transforms：translate3d、translateZ 等</li>
+<li>video、canvas、iframe 等元素</li>
+<li>对 opacity、transform、fliter、backdropfilter 应用了 animation 或者 transition</li>
+</ul>
+<h2 id="什么是浏览器同源策略？"><a href="#什么是浏览器同源策略？" class="headerlink" title="什么是浏览器同源策略？"></a>什么是浏览器同源策略？</h2><p>同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。同源是指：协议、域名、端口都相同。</p>
+<p>同源策略限制内容有：</p>
+<ul>
+<li>AJAX 请求</li>
+<li>Cookie、LocalStorage、IndexedDB 等存储性内容</li>
+<li>DOM 节点</li>
+</ul>
+<p>但是有三个标签是允许跨域加载资源：</p>
+<ul>
+<li><code>&lt;script src=XXX&gt;</code></li>
+<li><code>&lt;img src=XXX&gt;</code></li>
+<li><code>&lt;link href=XXX&gt;</code></li>
+</ul>
+<h2 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h2><p>由于同源策略的限制，如果访问一个协议 || 域名 || 端口号不同的资源，即为跨域访问。<br>跨域只存在于浏览器端，不存在于安卓/ios/Node.js/python/java等其它环境</p>
+<h3 id="简单请求和非简单请求"><a href="#简单请求和非简单请求" class="headerlink" title="简单请求和非简单请求"></a>简单请求和非简单请求</h3><p>只要同时满足以下两大条件，就属于简单请求。</p>
+<ol>
+<li>请求方法是：GET，POST或者HEAD</li>
+<li>请求头中没有自定义header。即头信息不超出以下几种字段<ul>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Content-Language </li>
+<li>Last-Event-ID</li>
+<li>Content-Type(只限于三个值application/x-www-form-urlencoded、multipart/form-data、text/plain)</li>
+</ul>
+</li>
+</ol>
+<p>Content-Type字段的类型是application/json的是非简单请求</p>
+<h3 id="请求到底发出去了没有"><a href="#请求到底发出去了没有" class="headerlink" title="请求到底发出去了没有"></a>请求到底发出去了没有</h3><p>跨域并不是请求发不出去，请求能发出去，服务端能收到请求并正常返回结果，只是结果被浏览器拦截了。</p>
+<ol>
+<li>对于简单请求<ul>
+<li>浏览器直接发出CORS请求，在头信息之中，增加一个Origin字段。</li>
+<li>服务器去检查这个值，如果Origin指定的域名在许可范围内，服务器返回的响应，会多出几个CORS头信息字段。<code>Access-Control-Allow-Origin</code>, <code>Access-Control-Allow-Credentials</code>, <code>Access-Control-Expose-Headers</code>, <code>Content-Type</code>等。</li>
+<li>如果Origin指定的源，不在许可范围内，服务器会返回一个正常的HTTP回应，但是不包含上述头信息。浏览器发现，这个回应的头信息没有包含CORS相关头信息，如Access-Control-Allow-Origin字段，就知道出错了，从而抛出一个错误，被XMLHttpRequest的onerror回调函数捕获并打印在控制台。注意，这种错误无法通过状态码识别，因为HTTP回应的状态码有可能是200。</li>
+</ul>
+</li>
+<li>对于非简单请求<ul>
+<li>先发送一个OPTIONS预检请求，头信息中包含Origin、Access-Control-Request-Method和Access-Control-Request-Headers等字段</li>
+<li>如果服务器确认允许该请求，响应信息会包含对应的CORS头</li>
+<li>如果服务器否定了此预检请求，会返回一个正常的HTTP回应，但是没有任何CORS相关的头信息字段。浏览器会认为不允许并抛错。</li>
+</ul>
+</li>
+</ol>
+<h3 id="解决跨域的方法"><a href="#解决跨域的方法" class="headerlink" title="解决跨域的方法"></a>解决跨域的方法</h3><ol>
+<li>服务端开启跨域资源共享Cross-Origin Resource Sharing(CORS)，设置 Access-Control-Allow-Origin</li>
+<li>客户端使用JSONP，服务器端也要支持对应的response</li>
+<li>设置代理服务器（Node中间件代理，Nginx反向代理）</li>
+</ol>
+<h3 id="JSONP的实现原理"><a href="#JSONP的实现原理" class="headerlink" title="JSONP的实现原理"></a>JSONP的实现原理</h3><p>利用 <code>&lt;script&gt;</code> 标签没有跨域限制的漏洞，缺点是只能发get请求，不安全可能会遭受XSS攻击  </p>
+<ol>
+<li>声明一个回调函数，函数形参为要获取的目标数据(服务器返回的data)</li>
+<li>创建一个<code>&lt;script&gt;</code>标签，把那个跨域的API数据接口地址，赋值给script的src,还要在这个地址中向服务器传递该回调函数名</li>
+<li>服务器收到请求后，需要把传进来的回调函数名和真正的数据data拼接成一个字符串，然后返回给客户端</li>
+<li>客户端会自动执行对应的回调函数，并将真正的data当做参数传进去<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">jsonp</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(data)</span><br><span class="line">    &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;script src="http:/</span><span class="regexp">/domain/</span>api?param1=a&amp;param2=b&amp;callback=jsonp<span class="string">"&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// 服务器响应</span></span><br><span class="line"><span class="string">"</span>jsonp(&#123;\<span class="string">"userid\":0,\"username\":\"null\"&#125;)"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="代理服务器的原理"><a href="#代理服务器的原理" class="headerlink" title="代理服务器的原理"></a>代理服务器的原理</h3><ul>
+<li>正向代理：客户端将请求发给自己的代理server，server再转发给目标server.</li>
+<li>反向代理：客户端直接发请求给目标server. 但是目标server其实是一个代理服务器。他代理某个安全的或内网的server的请求。对于客户端并不知道自己访问的是一个代理。但此时代理服务器对外就表现为一个服务器。作用：<ol>
+<li>保证内网的安全    </li>
+<li>负载均衡，反向代理服务器收到请求，转发到不同的内网server去处理请求。</li>
+</ol>
+</li>
+</ul>
+<p><b>Node中间件代理</b>：webpack的devserver就是一个正向代理<br><b>Nginx反向代理</b>：在目标服务器上设置一个nginx服务器，nginx服务器接收所有的请求并转发到真正的服务器。</p>
+<h2 id="浏览器的缓存机制"><a href="#浏览器的缓存机制" class="headerlink" title="浏览器的缓存机制"></a>浏览器的缓存机制</h2><p>浏览器缓存其实就是浏览器保存通过HTTP获取的所有资源,是浏览器将网络资源存储在本地的一种行为。  </p>
+<h3 id="三级缓存原理"><a href="#三级缓存原理" class="headerlink" title="三级缓存原理"></a>三级缓存原理</h3><ol>
+<li>先查找内存，如果内存中存在，从内存中加载；</li>
+<li>如果内存中未查找到，选择硬盘获取，如果硬盘中有，从硬盘中加载；</li>
+<li>如果硬盘中未查找到，那就进行网络请求；</li>
+<li>加载到的资源缓存到硬盘和内存；</li>
+</ol>
+<h3 id="强缓存和协商缓存"><a href="#强缓存和协商缓存" class="headerlink" title="强缓存和协商缓存"></a>强缓存和协商缓存</h3><p>浏览器在加载资源时，会先根据本地缓存资源的 header 中的 expires 和 cahe-control 信息判断是否命中强缓存，如果命中则直接使用缓存中的资源不会再向服务器发送请求。</p>
+<p>命中表示：有缓存且没过期。  </p>
+<ul>
+<li>Expires：这是 HTTP 1.0 的字段，表示缓存到期时间，是一个绝对的时间 (当前时间+缓存时间)。如 <code>Expires: Thu, 10 Nov 2017 08:45:11 GMT</code></li>
+<li>Cache-Control：在HTTP/1.1中，增加了一个字段Cache-control，该字段可以设置资源缓存的最大有效时间，它是一个相对时间，在该时间内，客户端不需要向服务器发送请求。如 <code>Cache-Control: max-age=36000</code><ol>
+<li>no-cache：需要进行协商缓存，发送请求到服务器确认是否使用缓存。</li>
+<li>no-store：禁止使用缓存，每一次都要重新请求数据。</li>
+<li>public：可以被所有的用户缓存，包括终端用户和 CDN 等中间代理服务器。</li>
+<li>private：只能被终端用户的浏览器缓存，不允许 CDN 等中继缓存服务器对其缓存。</li>
+</ol>
+</li>
+</ul>
+<p>Cache-Control 与 Expires 可以在服务端配置同时启用，同时启用的时候 Cache-Control 优先级高。</p>
+<p>协商缓存：当强制缓存失效(超过规定时间)时，就需要使用协商缓存，由服务器决定缓存内容是否失效。浏览器先请求缓存数据库，返回一个缓存标识。之后浏览器拿这个标识和服务器通讯。如果缓存未失效，则返回 HTTP 状态码 304 表示继续使用，于是客户端继续使用缓存；如果失效，则返回新的数据和缓存规则，浏览器响应数据后，再把规则写入到缓存数据库。协商缓存由Last-Modify/If-Modify-Since 和 ETag/If-None-Match实现</p>
+<ul>
+<li><p>Last-Modified &amp; If-Modified-Since</p>
+<ol>
+<li>服务器通过 Last-Modified 字段告知客户端，资源最后一次被修改的时间，例 <code>Last-Modified: Mon, 10 Nov 2018 09:10:11 GMT</code></li>
+<li>浏览器将这个值和内容一起记录在缓存数据库中。</li>
+<li>下一次请求相同资源时时，浏览器从自己的缓存中找出“不确定是否过期的”缓存。因此在请求头中将上次的 Last-Modified 的值写入到请求头的 If-Modified-Since 字段</li>
+<li><p>服务器会将 If-Modified-Since 的值与 Last-Modified 字段进行对比。如果相等，则表示未修改，响应 304；反之，则表示修改了，响应 200 状态码，并返回数据。  </p>
+<p>缺点:<br>短时间内资源发生了改变，Last-Modified 并不会发生变化。<br>周期性变化。如果这个资源在一个周期内修改回原来的样子了，我们认为是可以使用缓存的，但是 Last-Modified 可不这样认为,因此便有了 ETag。</p>
+</li>
+</ol>
+</li>
+<li>Etag &amp; If-None-Match  <ul>
+<li>与 Last-Modify/If-Modify-Since 不同的是，Etag/If-None-Match 返回的是一个校验码。ETag 可以保证每一个资源是唯一的，资源变化都会导致 ETag 变化。服务器根据header上的 If-None-Match 值来判断是否命中缓存。</li>
+</ul>
+</li>
+</ul>
+<p>Etag 的优先级高于 Last-Modified。Last-Modified 与 ETag 是可以一起使用的，服务器会优先验证 ETag，一致的情况下，会继续比对 Last-Modified，两个都匹配，返回304，否则返回200 和最新的响应体。</p>
+<h2 id="常见的浏览器内核有哪些"><a href="#常见的浏览器内核有哪些" class="headerlink" title="常见的浏览器内核有哪些?"></a>常见的浏览器内核有哪些?</h2><p>webkit内核，v8引擎</p>
+<h2 id="浏览器的主要组成部分是什么？"><a href="#浏览器的主要组成部分是什么？" class="headerlink" title="浏览器的主要组成部分是什么？"></a>浏览器的主要组成部分是什么？</h2><ul>
+<li>用户界面 - 包括地址栏、前进/后退按钮、书签菜单等。除了浏览器主窗口显示的您请求的页面外，其他显示的各个部分都属于用户界面。  </li>
+<li>浏览器引擎 - 在用户界面和呈现引擎之间传送指令。  </li>
+<li>呈现引擎 - 负责显示请求的内容。如果请求的内容是 HTML，它就负责解析  HTML 和 CSS 内容，并将解析后的内容显示在屏幕上。  </li>
+<li>网络 - 用于网络调用，比如 HTTP 请求。其接口与平台无关，并为所有平台提供底层实现。  </li>
+<li>用户界面后端 - 用于绘制基本的窗口小部件，比如组合框和窗口。其公开了与平台无关的通用接口，而在底层使用操作系统的用户界面方法。  </li>
+<li>JavaScript 解释器。用于解析和执行 JavaScript 代码。  </li>
+<li>数据存储。这是持久层。浏览器需要在硬盘上保存各种数据，例如 Cookie。新的 HTML 规范 (HTML5) 定义了“网络数据库”，这是一个完整（但是轻便）的浏览器内数据库。  </li>
+</ul>
+</div><div class="tags"><a href="/tags/浏览器/">浏览器</a></div><div class="post-nav"><a class="pre" href="/2022/01/11/1/ES6/">ES6</a><a class="next" href="/2022/01/11/1/网络与安全/">网络与安全</a></div><div id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'cXa2hNBumN2DUEHc5sMwqmAR-gzGzoHsz',
+  appKey:'k25vMV7ayuuHBhTaLWsiFGXp',
+  placeholder:'ヾﾉ≧∀≦)o欢迎你的评论~~~',
+  avatar:'mm',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://cuiqs.com"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/八股文/">八股文</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/学习/">学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计划/">计划</a><span class="category-list-count">2</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/防火墙/" style="font-size: 15px;">防火墙</a> <a href="/tags/OKR/" style="font-size: 15px;">OKR</a> <a href="/tags/学习/" style="font-size: 15px;">学习</a> <a href="/tags/浏览器/" style="font-size: 15px;">浏览器</a> <a href="/tags/Webkit/" style="font-size: 15px;">Webkit</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a> <a href="/tags/virtualenv/" style="font-size: 15px;">virtualenv</a> <a href="/tags/跨域/" style="font-size: 15px;">跨域</a> <a href="/tags/JavaScript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/ubuntu-nginx/" style="font-size: 15px;">ubuntu nginx</a> <a href="/tags/抓取网页/" style="font-size: 15px;">抓取网页</a> <a href="/tags/webpack4/" style="font-size: 15px;">webpack4</a> <a href="/tags/CSS/" style="font-size: 15px;">CSS</a> <a href="/tags/HTML/" style="font-size: 15px;">HTML</a> <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/Vue3-Vite/" style="font-size: 15px;">Vue3-Vite</a> <a href="/tags/Vue/" style="font-size: 15px;">Vue</a> <a href="/tags/性能优化/" style="font-size: 15px;">性能优化</a> <a href="/tags/ES6/" style="font-size: 15px;">ES6</a> <a href="/tags/网络与安全/" style="font-size: 15px;">网络与安全</a> <a href="/tags/软性/" style="font-size: 15px;">软性</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/CSS/">CSS</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/HTML/">HTML</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/React/">React</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/Webpack/">Webpack</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/vue3-vite/">Vue3-Vite</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/Vue/">Vue</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/JavaScript/">JavaScript</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/性能优化/">性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/ES6/">ES6</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/11/1/浏览器/">浏览器</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2022 <a href="/." rel="nofollow">不着急.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
